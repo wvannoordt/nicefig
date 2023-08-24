@@ -1,3 +1,4 @@
+#include <print.h>
 #include "nicefig.h"
 
 int main(int argc, char** argv)
@@ -14,11 +15,11 @@ int main(int argc, char** argv)
     double aspect = 0.5;
     
     nicefig::bnd_t ub{0.0,     0.5*max,  0.0,   aspect*max};
-    nicefig::bnd_t ux{1e-6,    1e0,     0.0,   1.5};
+    nicefig::bnd_t ux{1e-3,    1e0,     0.0,   1.5};
     
-    double delta = 0.04*max;
+    double delta = 0.08*max;
     nicefig::bnd_t tb{0.5*max + delta, max + delta,      0.0,   aspect*max};
-    nicefig::bnd_t tx{1e-6,    1e0,      0.0,   10.0};
+    nicefig::bnd_t tx{1e-3,    1e0,      0.0,   10.0};
     
     nicefig::pen_t p0; p0.style = nicefig::solid_style;
     nicefig::pen_t p1; p1.style = nicefig::dash_style;
@@ -29,20 +30,29 @@ int main(int argc, char** argv)
     u.add(d1, p1);
     u.add(d2, p2);
     
-    //u.set_xlog(true);
+    u.set_xlog(true);
     
     u.axis_label(0).enabled = true;
     u.axis_label(0).text    = "$\\overline{u}/U_b$";
     u.axis_label(0).offset  = 0.15;
-    u.axis_label(0).set_minor_ticks([](int i){return 0.025*i;});
+    u.axis_label(0).set_minor_ticks([](int i){return 0.02*i;});
     u.axis_label(0).set_major_ticks([](int i){return 0.2*i;});
     
-    u.axis_label(2).enabled = true;
+    u.axis_label(2).enabled  = true;
+    u.axis_label(2).loglabel = true;
     // u.axis_label(2).min_ticks_flipped = true;
     // u.axis_label(2).maj_ticks_flipped = true;
     u.axis_label(2).text    = "$y/\\delta$";
-    u.axis_label(2).set_minor_ticks([](int i){return 0.025*i;});
-    u.axis_label(2).set_major_ticks([](int i){return 0.2*i;});
+    u.axis_label(2).set_minor_ticks([](int i)
+    {
+        if (0.001*i < 0.01)       return 0.001*i;
+        if (0.01*(i-10)  < 0.1)   return 0.01*(i-10);
+        if (0.1*(i-20)   < 1.0)   return 0.1*(i-20);
+        if (1.0*(i-30)   < 10.0)  return 1.0*(i-30);
+        return 0.01*i;
+    });
+    u.axis_label(2).set_major_ticks([](int i){return std::pow(10.0, 1.0*i);});
+    
     
     nicefig::tikz_fontsize_t font{7};
     double offset = 0.03*max;
@@ -56,17 +66,25 @@ int main(int argc, char** argv)
     t.add(g1, p1);
     t.add(g2, p2);
     
-    t.set_xlog(false);
+    t.set_xlog(true);
     
     t.axis_label(1).enabled = true;
     t.axis_label(1).text    = "$\\overline{T}/T_w$";
     t.axis_label(1).set_minor_ticks([](int i){return 0.25*i;});
     t.axis_label(1).set_major_ticks([](int i){return 2.0*i;});
     
-    t.axis_label(2).enabled = true;
-    t.axis_label(2).text    = "$y/\\delta$";
-    t.axis_label(2).set_minor_ticks([](int i){return 0.025*i;});
-    t.axis_label(2).set_major_ticks([](int i){return 0.2*i;});
+    t.axis_label(2).enabled  = true;
+    t.axis_label(2).loglabel = true;
+    t.axis_label(2).text     = "$y/\\delta$";
+    t.axis_label(2).set_minor_ticks([](int i)
+    {
+        if (0.001*i < 0.01)       return 0.001*i;
+        if (0.01*(i-10)  < 0.1)   return 0.01*(i-10);
+        if (0.1*(i-20)   < 1.0)   return 0.1*(i-20);
+        if (1.0*(i-30)   < 10.0)  return 1.0*(i-30);
+        return 0.01*i;
+    });
+    t.axis_label(2).set_major_ticks([](int i){return std::pow(10.0, 1.0*i);});
     
     nicefig::pen_t bpen{1.75, nicefig::solid_style, {0,0,0}};
     

@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include <array>
 #include <concepts>
 #include "primitives.h"
@@ -66,7 +67,7 @@ namespace nicefig
             
             if (xlog)
             {
-                //todo
+                output[0] = min(0) + size(0)*(std::log10(xin[0]) - std::log10(axisbound[0]))/(std::log10(axisbound[1]) - std::log10(axisbound[0]));
             }
             
             if (ylog)
@@ -150,7 +151,7 @@ namespace nicefig
                     output << label.text;
                     output << "};\n";
                     
-                    const auto draw_ticks = [&](const std::vector<double>& ticks, double len, const pen_t& tpen, bool flip, bool write_text, tikz_fontsize_t fnt)
+                    const auto draw_ticks = [&](const std::vector<double>& ticks, double len, const pen_t& tpen, bool flip, bool write_text, tikz_fontsize_t fnt, bool loglabel)
                     {
                         for (const auto& t: ticks)
                         {
@@ -179,7 +180,15 @@ namespace nicefig
                                     output << ",rotate=0]";
                                     output << "[align=left] {";
                                     std::stringstream pp;
-                                    pp << t;
+                                    if (loglabel)
+                                    {
+                                        double lval = std::log10(t);
+                                        pp << "$10^{" << lval << "}$";
+                                    }
+                                    else
+                                    {
+                                        pp << t;
+                                    }
                                     output << pp.str();
                                     output << "};\n";
                                 }
@@ -187,8 +196,8 @@ namespace nicefig
                         }
                     };
                     
-                    draw_ticks(label.min_ticks, label.min_tick_len, label.min_pen, label.min_ticks_flipped, false, label.axisfontsize);
-                    draw_ticks(label.maj_ticks, label.maj_tick_len, label.maj_pen, label.maj_ticks_flipped, true,  label.axisfontsize);
+                    draw_ticks(label.min_ticks, label.min_tick_len, label.min_pen, label.min_ticks_flipped, false, label.axisfontsize, label.loglabel);
+                    draw_ticks(label.maj_ticks, label.maj_tick_len, label.maj_pen, label.maj_ticks_flipped, true,  label.axisfontsize, label.loglabel);
                 }
                 ++ct;
             }

@@ -59,6 +59,7 @@ namespace nicefig
     
     struct axis_label_t
     {
+        bool loglabel = false;
         bool enabled = false;
         std::string text = "variable";
         double maj_tick_len = 0.03;//normalized by the frame length in the corresponding direction
