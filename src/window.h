@@ -68,6 +68,7 @@ namespace nicefig
             if (xlog)
             {
                 output[0] = min(0) + size(0)*(std::log10(xin[0]) - std::log10(axisbound[0]))/(std::log10(axisbound[1]) - std::log10(axisbound[0]));
+                if (xin[0] < 1e-10) output[0] = axisbound[1];
             }
             
             if (ylog)
@@ -197,7 +198,7 @@ namespace nicefig
                     };
                     
                     draw_ticks(label.min_ticks, label.min_tick_len, label.min_pen, label.min_ticks_flipped, false, label.axisfontsize, label.loglabel);
-                    draw_ticks(label.maj_ticks, label.maj_tick_len, label.maj_pen, label.maj_ticks_flipped, true,  label.axisfontsize, label.loglabel);
+                    draw_ticks(label.maj_ticks, label.maj_tick_len, label.maj_pen, label.maj_ticks_flipped, label.enable_tick_text,  label.axisfontsize, label.loglabel);
                 }
                 ++ct;
             }

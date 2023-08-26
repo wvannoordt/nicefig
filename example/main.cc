@@ -11,8 +11,8 @@ int main(int argc, char** argv)
     nicefig::curve_t g1 = nicefig::read("data/Ttl.dat");
     nicefig::curve_t g2 = nicefig::read("data/Tym.dat");    
     
-    double max    = 600;
-    double aspect = 0.5;
+    double max    = 800;
+    double aspect = 0.3;
     
     nicefig::bnd_t ub{0.0,     0.5*max,  0.0,   aspect*max};
     nicefig::bnd_t ux{1e-3,    1e0,     0.0,   1.5};
@@ -35,13 +35,11 @@ int main(int argc, char** argv)
     u.axis_label(0).enabled = true;
     u.axis_label(0).text    = "$\\overline{u}/U_b$";
     u.axis_label(0).offset  = 0.15;
-    u.axis_label(0).set_minor_ticks([](int i){return 0.02*i;});
-    u.axis_label(0).set_major_ticks([](int i){return 0.2*i;});
+    u.axis_label(0).set_minor_ticks([](int i){return 0.04*i;});
+    u.axis_label(0).set_major_ticks([](int i){return 0.4*i;});
     
     u.axis_label(2).enabled  = true;
     u.axis_label(2).loglabel = true;
-    // u.axis_label(2).min_ticks_flipped = true;
-    // u.axis_label(2).maj_ticks_flipped = true;
     u.axis_label(2).text    = "$y/\\delta$";
     u.axis_label(2).set_minor_ticks([](int i)
     {
@@ -92,6 +90,16 @@ int main(int argc, char** argv)
     t.boxpen = bpen;
     
     nicefig::figure_t fig("out.tex");
+    
+    // u.axis_label(0).min_ticks_flipped = true;
+    // u.axis_label(0).maj_ticks_flipped = true;
+    // u.axis_label(2).min_ticks_flipped = true;
+    // u.axis_label(2).maj_ticks_flipped = true;
+    
+    // t.axis_label(1).min_ticks_flipped = true;
+    // t.axis_label(1).maj_ticks_flipped = true;
+    // t.axis_label(2).min_ticks_flipped = true;
+    // t.axis_label(2).maj_ticks_flipped = true;
     
     fig << u;
     fig << t;

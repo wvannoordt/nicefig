@@ -73,6 +73,7 @@ namespace nicefig
         int normal_dir, tangent_dir;
         bool min_ticks_flipped = false;
         bool maj_ticks_flipped = false;
+        bool enable_tick_text  = true;
         
         template <typename gen_t>
         void set_ticks(std::vector<double>& ticks, const gen_t gen)
