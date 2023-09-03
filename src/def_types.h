@@ -5,4 +5,5 @@ namespace nicefig
     using real_t  = double;
     using bnd_t   = std::array<double, 4>;
     using point_t = std::array<double, 2>;
+    using rgb_t   = std::array<float, 3>;
 }

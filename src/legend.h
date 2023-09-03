@@ -3,6 +3,7 @@
 #include "axis_label.h"
 #include "primitives.h"
 #include "textnode.h"
+#include "sym.h"
 
 namespace nicefig
 {
@@ -13,6 +14,7 @@ namespace nicefig
         pen_t                     border;
         bool                      has_border;
         std::vector<pen_t>        pens;
+        std::vector<sym_t>        syms;
         std::vector<std::string>  names;
         std::array<int, 2>        dims;
         double                    linelength; //normalized by the width of the box
@@ -57,6 +59,12 @@ namespace nicefig
                         pend[0]   -= (linespace)*small_cell_size[0];
                         // ss << sketch(cell, border) << "\n";
                         ss << sketch(pstart, pend, pens[ct]) << "\n";
+                        
+                        point_t pxt;
+                        pxt[0] = 0.5*(pstart[0] + pend[0]);
+                        pxt[1] = 0.5*(pstart[1] + pend[1]);
+                        const auto stt = get_sym_tikz(syms[ct], pxt);
+                        ss << stt << "\n";
                         
                         textnode_t node;
                         node.font = font;

@@ -6,6 +6,7 @@
 #include "curve.h"
 #include "axis_label.h"
 #include "legend.h"
+#include "sym.h"
 
 namespace nicefig
 {
@@ -19,6 +20,8 @@ namespace nicefig
         
         std::vector<curve_t<double>> curves;
         std::vector<pen_t>   pens;
+        std::vector<sym_t>   syms;
+        double sym_scale_fac = 2.0;
         
         pen_t boxpen{2.25, solid_style, {0,0,0}};
         
@@ -49,10 +52,11 @@ namespace nicefig
         
         template <typename data_t>
         requires (std::same_as<data_t, double>)
-        handle_t add(const curve_t<data_t>& n, const pen_t pen = default_pen)
+        handle_t add(const curve_t<data_t>& n, const pen_t pen = default_pen, const sym_t sym = no_sym)
         {
             curves.push_back(n);
             pens.push_back(pen);
+            syms.push_back(sym);
             return curves.size() - 1;
         }
         
@@ -93,6 +97,8 @@ namespace nicefig
             legend_t output;
             output.names         = names;
             output.pens          = pens;
+            output.syms          = syms;
+            for (auto& s: output.syms) s.size *= sym_scale_fac;
             output.anchor        = anch;
             output.x             = location;
             output.border        = boxpen;
@@ -115,8 +121,9 @@ namespace nicefig
             output << "\\clip (" << min(0) << "," << min(1) << ") rectangle (" << max(0) << "," << max(1) << ");\n";
             for (std::size_t j = 0; j < curves.size(); ++j)
             {
-                const auto& l = curves[j];
-                const auto& p = pens[j];
+                const auto& l   = curves[j];
+                const auto& p   = pens[j];
+                const auto& sym = syms[j];
                 std::vector<point_t> locals;
                 locals.reserve(l.size());
                 for (std::size_t i = 0; i < l.size(); ++i)
@@ -124,6 +131,12 @@ namespace nicefig
                     locals.push_back(map({l.x(i), l.y(i)}));
                 }
                 output << sketch(locals, p) << "\n";
+                for (std::size_t i = 0; i < l.size(); ++i)
+                {
+                    auto px = map({l.x(i), l.y(i)});
+                    const auto stt = get_sym_tikz(sym, px);
+                    output << stt << "\n";
+                }
             }
             output << "\\end{scope}\n";
             

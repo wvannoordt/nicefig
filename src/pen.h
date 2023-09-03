@@ -27,8 +27,6 @@ namespace nicefig
         }
     }
     
-    using rgb_t = std::array<float, 3>;
-    
     struct pen_t
     {
         double width = 2.0;
@@ -42,6 +40,17 @@ namespace nicefig
                 + ", color = {rgb,255:red," + std::to_string((int)(255*color[0]))
                 + ";green,"                 + std::to_string((int)(255*color[1]))
                 + ";blue,"                  + std::to_string((int)(255*color[2])) + "}]";
+        }
+        
+        std::string to_tikz(const rgb_t& fill) const
+        {
+            return std::string("[") + detail::tstr(style) + ",line width = " + std::to_string(width)
+                + ",color = {rgb,255:red," +  std::to_string((int)(255*color[0]))
+                + ";green,"                 + std::to_string((int)(255*color[1]))
+                + ";blue,"                  + std::to_string((int)(255*color[2])) + "}, draw opacity = 1,"
+                + "fill = {rgb,255:red,"  + std::to_string((int)(255*fill[0]))
+                + ";green,"                 + std::to_string((int)(255*fill[1]))
+                + ";blue,"                  + std::to_string((int)(255*fill[2])) + "}, fill opacity=1]";
         }
     };
 }

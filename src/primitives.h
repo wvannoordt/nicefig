@@ -5,6 +5,18 @@ namespace nicefig
 {
     constexpr static pen_t default_pen{2.0, solid_style, {0.0, 0.0, 0.0}};
     
+    static std::string sketch(const bnd_t& box, const pen_t& pen, const rgb_t& fill)
+    {
+        std::stringstream ss;
+        ss << "\\draw";
+        ss << pen.to_tikz(fill);
+        ss << " (" << box[0] << ", " << box[2] << ") --";
+        ss << " (" << box[1] << ", " << box[2] << ") --";
+        ss << " (" << box[1] << ", " << box[3] << ") --";
+        ss << " (" << box[0] << ", " << box[3] << ") -- cycle;";
+        return ss.str();
+    }
+    
     static std::string sketch(const bnd_t& box, const pen_t& pen = default_pen)
     {
         std::stringstream ss;
