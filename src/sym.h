@@ -36,7 +36,6 @@ namespace nicefig
                 b[1] = pt[0]+0.5*sym.size;
                 b[2] = pt[1]-0.5*sym.size;
                 b[3] = pt[1]+0.5*sym.size;
-                print(sym.color[0], sym.color[1], sym.color[2]);
                 return sketch(b, sym.border, sym.color);
             }
         }
