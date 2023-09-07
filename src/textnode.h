@@ -57,7 +57,7 @@ namespace nicefig
         bnd_t output;
         output[0] = x[0] + displ[0]*size[0];
         output[1] = output[0] + size[0];
-        output[2] = x[1] + displ[0]*size[1];
+        output[2] = x[1] + displ[1]*size[1];
         output[3] = output[2] + size[1];
         
         return output;

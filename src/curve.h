@@ -23,6 +23,10 @@ namespace nicefig
         std::string line;
         while(std::getline(mf, line))
         {
+            for (auto& i:line)
+            {
+                if (i==',') i = ' ';
+            }
             std::istringstream iss(line);
             data_t x, y;
             iss >> x;

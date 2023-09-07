@@ -22,12 +22,13 @@ namespace nicefig
         std::array<double, 2>     spacing;
         tikz_fontsize_t           font;
         bool                      center_anchor;
+        double                    hscale = 1.0;
         
         std::string to_tikz() const
         {
             std::stringstream ss;
             int max_str_len = -1;
-            for (const auto& n: names) max_str_len = std::max(max_str_len, int(n.length()));
+            for (const auto& n: names) max_str_len = hscale*std::max(max_str_len, int(n.length()));
             
             //central cell size
             std::array small_cell_size{max_str_len*font.ptsize(), font.ptsize()};

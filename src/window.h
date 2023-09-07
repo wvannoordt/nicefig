@@ -21,6 +21,12 @@ namespace nicefig
         std::vector<curve_t<double>> curves;
         std::vector<pen_t>   pens;
         std::vector<sym_t>   syms;
+        
+        std::vector<double>  xlines;
+        std::vector<pen_t>   xline_pens;
+        
+        std::vector<double>  ylines;
+        std::vector<pen_t>   yline_pens;
         double sym_scale_fac = 2.0;
         
         pen_t boxpen{2.25, solid_style, {0,0,0}};
@@ -50,6 +56,26 @@ namespace nicefig
             }
         }
         
+        void add_xline(double xx, const pen_t& pn = default_pen)
+        {
+            xlines.push_back(xx);
+            xline_pens.push_back(pn);
+        }
+        void add_yline(double yy, const pen_t& pn = default_pen)
+        {
+            ylines.push_back(yy);
+            yline_pens.push_back(pn);
+        }
+        
+        window_t subwindow(const bnd_t& region, const bnd_t& location) const 
+        {
+            window_t output = *this;
+            output.bnd = location;
+            output.axisbound = region;
+            for (auto& l: output.axis_labels) l.enabled = false;
+            return output;
+        }
+        
         template <typename data_t>
         requires (std::same_as<data_t, double>)
         handle_t add(const curve_t<data_t>& n, const pen_t pen = default_pen, const sym_t sym = no_sym)
@@ -58,6 +84,20 @@ namespace nicefig
             pens.push_back(pen);
             syms.push_back(sym);
             return curves.size() - 1;
+        }
+        
+        template <typename xfunc_t, typename yfunc_t>
+        handle_t add(double t0, double t1, int n, const xfunc_t& xf, const yfunc_t& yf, const pen_t pen = default_pen, const sym_t sym = no_sym)
+        {
+            curve_t<double> xx;
+            const auto dt = (t1-t0)/n;
+            for (int i = 0; i <= n; ++i)
+            {
+                double t = t0 + i*dt;
+                xx.xdat.push_back(xf(t));
+                xx.ydat.push_back(yf(t));
+            }
+            return this->add(xx, pen, sym);
         }
         
         //Gets the coordinates on the canvas given the plot coordinates
@@ -119,6 +159,25 @@ namespace nicefig
             output << sketch(bnd, boxpen) << "\n";
             output << "\\begin{scope}\n";
             output << "\\clip (" << min(0) << "," << min(1) << ") rectangle (" << max(0) << "," << max(1) << ");\n";
+            int ctr = 0;
+            for (const auto xx: xlines)
+            {
+                point_t x00 = map({xx, axisbound[2]});
+                point_t x01 = map({xx, axisbound[3]});
+                const auto pn = xline_pens[ctr];
+                output << sketch(x00, x01, pn) << "\n";
+                ++ctr;
+            }
+            ctr = 0;
+            for (const auto yy: ylines)
+            {
+                point_t x00 = map({axisbound[0], yy});
+                point_t x01 = map({axisbound[1], yy});
+                const auto pn = yline_pens[ctr];
+                output << sketch(x00, x01, pn) << "\n";
+                
+                ++ctr;
+            }
             for (std::size_t j = 0; j < curves.size(); ++j)
             {
                 const auto& l   = curves[j];
@@ -130,7 +189,7 @@ namespace nicefig
                 {
                     locals.push_back(map({l.x(i), l.y(i)}));
                 }
-                output << sketch(locals, p) << "\n";
+                if (p.width > 1e-6) output << sketch(locals, p) << "\n";
                 for (std::size_t i = 0; i < l.size(); ++i)
                 {
                     auto px = map({l.x(i), l.y(i)});
