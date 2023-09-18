@@ -75,6 +75,12 @@ namespace nicefig
         bool maj_ticks_flipped = false;
         bool enable_tick_text  = true;
         
+        void set_color(const rgb_t& col)
+        {
+            maj_pen.color = col;
+            min_pen.color = col;
+        }
+        
         template <typename gen_t>
         void set_ticks(std::vector<double>& ticks, const gen_t gen)
         {

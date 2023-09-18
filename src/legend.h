@@ -59,7 +59,7 @@ namespace nicefig
                         pstart[0] -= (linelength+linespace)*small_cell_size[0];
                         pend[0]   -= (linespace)*small_cell_size[0];
                         // ss << sketch(cell, border) << "\n";
-                        ss << sketch(pstart, pend, pens[ct]) << "\n";
+                        if (pens[ct].width > 1e-6) ss << sketch(pstart, pend, pens[ct]) << "\n";
                         
                         point_t pxt;
                         pxt[0] = 0.5*(pstart[0] + pend[0]);
