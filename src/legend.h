@@ -23,6 +23,7 @@ namespace nicefig
         tikz_fontsize_t           font;
         bool                      center_anchor;
         double                    hscale = 1.0;
+        double manual_cell_size   = -100.0;
         
         std::string to_tikz() const
         {
@@ -32,6 +33,7 @@ namespace nicefig
             
             //central cell size
             std::array small_cell_size{max_str_len*font.ptsize(), font.ptsize()};
+            if (manual_cell_size > 0.0) small_cell_size[0] = manual_cell_size;
             std::array big_cell_size  {(1.0+spacing[0]+linelength+linespace)*small_cell_size[0], (1.0+spacing[1])*small_cell_size[1]};
             std::array bnd_size       {big_cell_size[0]*dims[0], big_cell_size[1]*dims[1]};
             // print(bnd_size[0], bnd_size[1]);

@@ -1,4 +1,3 @@
-#include <print.h>
 #include "nicefig.h"
 
 int main(int argc, char** argv)

@@ -1,7 +1,6 @@
 #pragma once
 #include <cmath>
 #include <array>
-#include <concepts>
 #include "primitives.h"
 #include "curve.h"
 #include "axis_label.h"
@@ -76,9 +75,7 @@ namespace nicefig
             return output;
         }
         
-        template <typename data_t>
-        requires (std::same_as<data_t, double>)
-        handle_t add(const curve_t<data_t>& n, const pen_t pen = default_pen, const sym_t sym = no_sym)
+        handle_t add(const curve_t<double>& n, const pen_t pen = default_pen, const sym_t sym = no_sym)
         {
             curves.push_back(n);
             pens.push_back(pen);
