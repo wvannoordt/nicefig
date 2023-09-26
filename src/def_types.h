@@ -9,6 +9,6 @@ namespace nicefig
     
     static constexpr rgb_t invert(const rgb_t& c)
     {
-        return rgb_t{1.0-c[0], 1.0-c[1], 1.0-c[2]};
+        return rgb_t{float(1.0)-c[0], float(1.0)-c[1], float(1.0)-c[2]};
     }
 }

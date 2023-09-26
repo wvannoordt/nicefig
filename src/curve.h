@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include <sstream>
 #include "def_types.h"
 namespace nicefig
@@ -22,6 +23,20 @@ namespace nicefig
                 ydat.push_back(rhs.ydat[i]);
             }
             return *this;
+        }
+        
+        void xsort()
+        {
+            std::vector<std::size_t> idx;
+            for (const auto& i: xdat) idx.push_back(idx.size());
+            std::sort(idx.begin(), idx.end(), [&](const auto& a, const auto& b) { return xdat[a] < xdat[b]; });
+            auto xold = xdat;
+            auto yold = ydat;
+            for (std::size_t i = 0; i < idx.size(); ++i)
+            {
+                xdat[i] = xold[idx[i]];
+                ydat[i] = yold[idx[i]];
+            }
         }
     };
     
