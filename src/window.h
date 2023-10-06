@@ -239,7 +239,7 @@ namespace nicefig
                                 if ((pm==0) == !flip) mult = -1;
                                 end[nor_dir] = mapped[nor_dir]   +     mult*len*size(nor_dir);
                                 ptext[nor_dir] = mapped[nor_dir] + 1.5*mult*len*size(nor_dir);
-                                if (tpen.width > 1e-6) output << sketch(mapped, end, tpen);
+                                if (tpen.width > 1e-6) output << sketch(mapped, end, tpen) << "\n";
                                 std::string                  nchr = "north";
                                 if (tan_dir == 0 && pm == 1) nchr = "south";
                                 if (tan_dir == 1 && pm == 0) nchr = "east";
