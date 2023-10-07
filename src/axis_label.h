@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 namespace nicefig
 {
     struct tikz_fontsize_t
@@ -86,7 +86,10 @@ namespace nicefig
         {
             int i = 0;
             double val = gen(0);
-            while (val > min_ax_val) val = gen(--i);
+            while (val > min_ax_val)
+            {
+                val = gen(--i);
+            }
             while (val < max_ax_val)
             {
                 val = gen(i++);

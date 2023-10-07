@@ -109,12 +109,13 @@ namespace nicefig
             if (xlog)
             {
                 output[0] = min(0) + size(0)*(std::log10(xin[0]) - std::log10(axisbound[0]))/(std::log10(axisbound[1]) - std::log10(axisbound[0]));
-                if (xin[0] < 1e-10) output[0] = axisbound[1];
+                if (xin[0] < 1e-10) output[0] = axisbound[0];
             }
             
             if (ylog)
             {
-                //todo
+                output[1] = min(1) + size(1)*(std::log10(xin[1]) - std::log10(axisbound[2]))/(std::log10(axisbound[3]) - std::log10(axisbound[2]));
+                if (xin[1] < 1e-10) output[1] = axisbound[2];
             }
             
             return output;

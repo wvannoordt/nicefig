@@ -9,7 +9,8 @@ namespace nicefig
         dash_style,
         dot_style,
         densedot_style,
-        solid_style
+        solid_style,
+        dashdot_style
     };
     
     namespace detail
@@ -21,6 +22,7 @@ namespace nicefig
                 case dash_style:     return "dashed";
                 case dot_style:      return "dotted";
                 case densedot_style: return "densely dotted";
+                case dashdot_style:  return "dashdotted";
                 case solid_style:    return "solid";
                 default:             return "solid";
             }
