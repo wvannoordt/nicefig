@@ -17,7 +17,7 @@ int main(int argc, char** argv)
     nicefig::bnd_t ux{1e-3,    1e0,     0.0,   1.5};
     
     double delta = 0.08*max;
-    nicefig::bnd_t tb{0.5*max + delta, max + delta,      0.0,   aspect*max};
+    nicefig::bnd_t tb{0.5*max + delta, max + delta, 0.0,   aspect*max};
     nicefig::bnd_t tx{1e-3,    1e0,      0.0,   10.0};
     
     nicefig::pen_t p0; p0.style = nicefig::solid_style;
