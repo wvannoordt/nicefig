@@ -26,5 +26,17 @@ namespace nicefig
             hdl << rhs.to_tikz() << "\n";
             return *this;
         }
+        
+        figure_t& operator << (const std::string& rhs)
+        {
+            hdl << rhs << "\n";
+            return *this;
+        }
+        
+        figure_t& operator << (const char* rhs)
+        {
+            hdl << rhs << "\n";
+            return *this;
+        }
     };
 }
