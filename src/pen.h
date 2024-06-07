@@ -13,9 +13,16 @@ namespace nicefig
         dashdot_style
     };
     
+    enum arrow_style
+    {
+        no_arrow,
+        stealth_arrow,
+        default_arrow
+    };
+    
     namespace detail
     {
-        std::string tstr(const line_style& st)
+        static std::string tstr(const line_style& st)
         {
             switch(st)
             {
@@ -27,6 +34,21 @@ namespace nicefig
                 default:             return "solid";
             }
         }
+        
+        static std::string arrow_str(const arrow_style& a)
+        {
+            if (a == no_arrow) return "";
+            if (a == stealth_arrow) return "stealth";
+            if (a == default_arrow) return "to";
+            return "??";
+        }
+        
+        static std::string arrows_str(const arrow_style& a, const arrow_style& b)
+        {
+            if((a == no_arrow) && (b == no_arrow)) return "";
+            std::string output = arrow_str(a) + "-" + arrow_str(b);
+            return "," + output;
+        }
     }
     
     struct pen_t
@@ -34,10 +56,12 @@ namespace nicefig
         double width = 2.0;
         line_style style = solid_style;
         rgb_t color = {0.0,0.0,0.0};
+        arrow_style left_arrow  = no_arrow;
+        arrow_style right_arrow = no_arrow;
         
         std::string to_tikz() const
         {
-            return std::string("[") + detail::tstr(style)
+            return std::string("[") + detail::tstr(style) + detail::arrows_str(left_arrow, right_arrow)
                 + ", line width = " + std::to_string(width)
                 + ", color = {rgb,255:red," + std::to_string((int)(255*color[0]))
                 + ";green,"                 + std::to_string((int)(255*color[1]))

@@ -10,7 +10,7 @@ namespace nicefig
         scoped_clip_t(figure_t& f_in, bnd_t bnd)
         {
             f = &f_in;
-            *f << "\\begin{scope}\n\\clip(" + std::to_string(bnd[0]) + "," + std::to_string(bnd[2]) + ") rectangle (" + std::to_string(bnd[1]-bnd[0]) + "," + std::to_string(bnd[3]-bnd[2]) + ");";
+            *f << "\\begin{scope}\n\\clip(" + std::to_string(bnd[0]) + "," + std::to_string(bnd[2]) + ") rectangle (" + std::to_string(bnd[1]) + "," + std::to_string(bnd[3]) + ");";
         }
         
         ~scoped_clip_t()

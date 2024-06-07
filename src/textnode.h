@@ -71,6 +71,17 @@ namespace nicefig
         double rotate;
         point_t x;
         
+        textnode_t(){}
+        
+        textnode_t(const std::string& tin, const point_t& xin)
+        {
+            font = tikz_fontsize_t{5};
+            anchor = anchor_southwest;
+            text = tin;
+            x = xin;
+            rotate = 0;
+        }
+        
         std::string to_tikz() const
         {
             std::stringstream ss;

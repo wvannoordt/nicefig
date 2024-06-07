@@ -7,3 +7,4 @@
 #include "img_ref.h"
 #include "figure.h"
 #include "scoped_clip.h"
+#include "auto_bounds.h"

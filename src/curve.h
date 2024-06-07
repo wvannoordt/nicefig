@@ -14,6 +14,8 @@ namespace nicefig
         std::size_t size() const {return xdat.size();}
         const data_t& x(std::size_t i) const { return xdat[i];}
         const data_t& y(std::size_t i) const { return ydat[i];}
+        data_t& x(std::size_t i) { return xdat[i];}
+        data_t& y(std::size_t i) { return ydat[i];}
         
         curve_t& operator += (const curve_t& rhs)
         {

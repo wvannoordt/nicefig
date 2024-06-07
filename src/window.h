@@ -222,7 +222,7 @@ namespace nicefig
                     output << label.text;
                     output << "};\n";
                     
-                    const auto draw_ticks = [&](const std::vector<double>& ticks, double len, const pen_t& tpen, bool flip, bool write_text, tikz_fontsize_t fnt, bool loglabel)
+                    const auto draw_ticks = [&](const std::vector<double>& ticks, double len, const pen_t& tpen, bool flip, bool write_text, tikz_fontsize_t fnt, bool loglabel, int logbase)
                     {
                         for (const auto& t: ticks)
                         {
@@ -253,8 +253,8 @@ namespace nicefig
                                     std::stringstream pp;
                                     if (loglabel)
                                     {
-                                        double lval = std::log10(t);
-                                        pp << "$10^{" << lval << "}$";
+                                        double lval = std::log(t)/std::log(logbase);
+                                        pp << "$" + std::to_string(logbase) + "^{" << lval << "}$";
                                     }
                                     else
                                     {
@@ -267,8 +267,8 @@ namespace nicefig
                         }
                     };
                     
-                    draw_ticks(label.min_ticks, label.min_tick_len, label.min_pen, label.min_ticks_flipped, false, label.axisfontsize, label.loglabel);
-                    draw_ticks(label.maj_ticks, label.maj_tick_len, label.maj_pen, label.maj_ticks_flipped, label.enable_tick_text,  label.axisfontsize, label.loglabel);
+                    draw_ticks(label.min_ticks, label.min_tick_len, label.min_pen, label.min_ticks_flipped, false, label.axisfontsize, label.loglabel, label.logbase);
+                    draw_ticks(label.maj_ticks, label.maj_tick_len, label.maj_pen, label.maj_ticks_flipped, label.enable_tick_text,  label.axisfontsize, label.loglabel, label.logbase);
                 }
                 ++ct;
             }
