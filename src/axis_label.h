@@ -31,7 +31,6 @@ namespace nicefig
             {
                 coeff /= 2.0;
             }
-            
             if (nwin > 7)
             {
                 coeff *= 2.0;

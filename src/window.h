@@ -28,6 +28,9 @@ namespace nicefig
         std::vector<pen_t>   yline_pens;
         double sym_scale_fac = 2.0;
         
+        bool grid_on = false;
+        pen_t grid_pen{0.5, solid_style, {0.6,0.6,0.6}};
+        
         pen_t boxpen{2.25, solid_style, {0,0,0}};
         
         double min (int i) const {return bnd[2*i];}
@@ -53,6 +56,11 @@ namespace nicefig
                 axis_labels[i].min_ax_val  = val_min(axis_labels[i].tangent_dir);
                 axis_labels[i].max_ax_val  = val_max(axis_labels[i].tangent_dir);
             }
+        }
+        
+        void enable_grid()
+        {
+            grid_on = true;
         }
         
         void add_xline(double xx, const pen_t& pn = default_pen)
@@ -152,26 +160,49 @@ namespace nicefig
         
         std::string to_tikz() const
         {
-            
+            auto xlines_loc = xlines;
+            auto xline_pens_loc = xline_pens;
+            auto ylines_loc = ylines;
+            auto yline_pens_loc = yline_pens;
+            if (grid_on)
+            {
+                for (int ii = 0; ii < axis_labels.size(); ++ii)
+                {
+                    const auto& label = axis_labels[ii];
+                    bool is_y = (ii < 2);
+                    for (const auto& xx: label.maj_ticks)
+                    {
+                        if (is_y)
+                        {
+                            ylines_loc.push_back(xx);
+                            yline_pens_loc.push_back(grid_pen);
+                        }
+                        else
+                        {
+                            xlines_loc.push_back(xx);
+                            xline_pens_loc.push_back(grid_pen);
+                        }
+                    }
+                }
+            }
             std::stringstream output;
-            output << sketch(bnd, boxpen) << "\n";
             output << "\\begin{scope}\n";
             output << "\\clip (" << min(0) << "," << min(1) << ") rectangle (" << max(0) << "," << max(1) << ");\n";
             int ctr = 0;
-            for (const auto xx: xlines)
+            for (const auto xx: xlines_loc)
             {
                 point_t x00 = map({xx, axisbound[2]});
                 point_t x01 = map({xx, axisbound[3]});
-                const auto pn = xline_pens[ctr];
+                const auto pn = xline_pens_loc[ctr];
                 output << sketch(x00, x01, pn) << "\n";
                 ++ctr;
             }
             ctr = 0;
-            for (const auto yy: ylines)
+            for (const auto yy: ylines_loc)
             {
                 point_t x00 = map({axisbound[0], yy});
                 point_t x01 = map({axisbound[1], yy});
-                const auto pn = yline_pens[ctr];
+                const auto pn = yline_pens_loc[ctr];
                 output << sketch(x00, x01, pn) << "\n";
                 
                 ++ctr;
@@ -196,6 +227,7 @@ namespace nicefig
                 }
             }
             output << "\\end{scope}\n";
+            output << sketch(bnd, boxpen) << "\n";
             
             int ct = 0;
             for (const auto& label:axis_labels)
