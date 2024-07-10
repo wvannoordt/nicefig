@@ -47,6 +47,10 @@ namespace nicefig
     {
         curve_t<data_t> output;
         std::ifstream mf(filename);
+        if(mf.fail())
+        {
+            throw std::runtime_error("Requested file \"" + filename + "\" could not be opened.");
+        }
         std::string line;
         while(std::getline(mf, line))
         {
@@ -61,6 +65,9 @@ namespace nicefig
             output.xdat.push_back(x);
             output.ydat.push_back(y);
         }
+        
+        
+        
         return output;
     }
 }

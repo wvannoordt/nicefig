@@ -15,7 +15,7 @@ namespace nicefig
                 + ";green,"                 + std::to_string((int)(255*backgr[1]))
                 + ";blue,"                  + std::to_string((int)(255*backgr[2])) + "}";
             hdl << "\\usetikzlibrary{backgrounds}\n\\tikzset{background rectangle/.style={fill=" << bckgr << "}}\n\\tikzset{every picture/.style={line width=0.75pt}}\n";
-            hdl << "\\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=1,xscale=1]\n";
+            hdl << "\\begin{tikzpicture}[x=1.0pt,y=1.0pt,yscale=1,xscale=1]\n";
         }
         
         ~figure_t() { hdl << "\\end{tikzpicture}\n"; }
