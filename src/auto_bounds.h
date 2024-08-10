@@ -28,4 +28,21 @@ namespace nicefig
         
         return output;
     }
+    
+    template <typename... curves_t>
+    static bnd_t auto_bounds(const curves_t&... data)
+    {
+        std::array bnds{auto_bounds(data)...};
+        
+        bnd_t output = bnds[0];
+        for (int i = 0; i < bnds.size(); ++i)
+        {
+            output[0] = std::min(output[0], bnds[i][0]);
+            output[1] = std::max(output[1], bnds[i][1]);
+            output[2] = std::min(output[2], bnds[i][2]);
+            output[3] = std::max(output[3], bnds[i][3]);
+        };
+        
+        return output;
+    }
 }
