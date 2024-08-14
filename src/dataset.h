@@ -58,7 +58,7 @@ namespace nicefig
         }
     };
     
-    static dataset_t read_data(const std::string& fname)
+    static dataset_t read_data(const std::string& fname, int nskip = 0)
     {
         dataset_t output;
         std::ifstream mf(fname);
@@ -67,6 +67,7 @@ namespace nicefig
         int num_cols = 0;
         
         std::string line, tmph;
+        for (int i = 0; i < nskip; ++i) std::getline(mf, line);
         if (!std::getline(mf, tmph) || !(std::getline(mf, line))) throw std::runtime_error("Could not open file \"" + fname + "\": empty file");
         for (auto& i:line)
         {
@@ -90,8 +91,11 @@ namespace nicefig
             num_cols++;
         }
         
+        
+        
         mf.clear();
         mf.seekg(0);
+        for (int i = 0; i < nskip; ++i) std::getline(mf, line);
         if (has_header)
         {
             std::string header;

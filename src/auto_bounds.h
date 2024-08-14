@@ -45,4 +45,20 @@ namespace nicefig
         
         return output;
     }
+    
+    template <typename val_t>
+    static bnd_t auto_bounds(const std::vector<curve_t<val_t>>& bnds)
+    {
+        bnd_t output = auto_bounds(bnds[0]);
+        for (int i = 0; i < bnds.size(); ++i)
+        {
+            const auto bd_lc = auto_bounds(bnds[i]);
+            output[0] = std::min(output[0], bd_lc[0]);
+            output[1] = std::max(output[1], bd_lc[1]);
+            output[2] = std::min(output[2], bd_lc[2]);
+            output[3] = std::max(output[3], bd_lc[3]);
+        };
+        
+        return output;
+    }
 }
