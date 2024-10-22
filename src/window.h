@@ -126,6 +126,13 @@ namespace nicefig
                 if (xin[1] < 1e-10) output[1] = axisbound[2];
             }
             
+            double mmmin = -5000;
+            double mmmax =  5000;
+            output[0] = std::min(output[0], mmmax);
+            output[1] = std::min(output[1], mmmax);
+            output[0] = std::max(output[0], mmmin);
+            output[1] = std::max(output[1], mmmin);
+            
             return output;
         }
         

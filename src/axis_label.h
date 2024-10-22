@@ -128,6 +128,7 @@ namespace nicefig
         template <typename gen_t>
         void set_ticks(std::vector<double>& ticks, const gen_t gen)
         {
+            ticks.clear();
             int i = 0;
             double val = gen(0);
             while (val > min_ax_val)
