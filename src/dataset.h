@@ -62,20 +62,23 @@ namespace nicefig
     {
         dataset_t output;
         std::ifstream mf(fname);
-        constexpr static std::string_view dlms = ";, ";
+        constexpr static std::string_view dlms     = ";, ";
+        constexpr static std::string_view comments = "#%";
         if (mf.fail()) throw std::runtime_error("Could not open file \"" + fname + "\" for dataset read");
         int num_cols = 0;
         
         std::string line, tmph;
         for (int i = 0; i < nskip; ++i) std::getline(mf, line);
         if (!std::getline(mf, tmph) || !(std::getline(mf, line))) throw std::runtime_error("Could not open file \"" + fname + "\": empty file");
+        
+        
         for (auto& i:line)
         {
-            if (dlms.find(i) != std::string::npos) i = ' ';
+            if ((dlms.find(i) != std::string::npos) || (comments.find(i) != std::string::npos)) i = ' ';
         }
         for (auto& i:tmph)
         {
-            if (dlms.find(i) != std::string::npos) i = ' ';
+            if ((dlms.find(i) != std::string::npos) || (comments.find(i) != std::string::npos)) i = ' ';
         }
         std::istringstream isstmph(tmph);
         double pp;
@@ -103,7 +106,7 @@ namespace nicefig
             
             for (auto& i:header)
             {
-                if (dlms.find(i) != std::string::npos) i = ' ';
+                if ((dlms.find(i) != std::string::npos) || (comments.find(i) != std::string::npos)) i = ' ';
             }
             
             std::istringstream hiss(header);
@@ -132,7 +135,7 @@ namespace nicefig
         {
             for (auto& i:line)
             {
-                if (dlms.find(i) != std::string::npos) i = ' ';
+                if ((dlms.find(i) != std::string::npos) || (comments.find(i) != std::string::npos)) i = ' ';
             }
             std::istringstream siss(line);
             for (int i = 0; i < num_cols; ++i)

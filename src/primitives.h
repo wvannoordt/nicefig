@@ -52,4 +52,18 @@ namespace nicefig
         ss << ";";
         return ss.str();
     }
+    
+    static std::string sketch(const std::vector<point_t>& data, const pen_t& pen, const rgb_t& fill)
+    {
+        std::stringstream ss;
+        ss << "\\draw";
+        ss << pen.to_tikz(fill);
+        for (std::size_t i = 0; i < data.size(); ++i)
+        {
+            if (i > 0) ss << " -- ";
+            ss << "(" << data[i][0] << "," << data[i][1] << ")";
+        }
+        ss << ";";
+        return ss.str();
+    }
 }
